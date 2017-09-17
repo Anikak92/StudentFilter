@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
-    Layout = null;
+	ViewBag.Title = "Index";
+	Layout = null;
 }
 
 <!DOCTYPE html>
@@ -9,264 +9,62 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width" />
-
 	<title>@ViewBag.Title</title>
+	<script src="~/Resources/jquery-3.2.1.min.js"></script>
+	<script src="~/Resources/jquery-ui.min.js"></script>
+	<link href="~/Resources/test.css" rel="stylesheet" />
+	<link href="~/Resources/jquery-ui.min.css" rel="stylesheet" />
+	<script src="~/Resources/jquery.flot.min.js"></script>
+	<script src="~/Resources/jquery.flot.resize.min.js"></script>
+	<script src="~/Resources/jquery.flot.dashes.js"></script>
+	<script src="~/Resources/jquery.flot.navigate.js"></script>
+	<script src="~/Resources/jquery.flot.tickrotor.js"></script>
+	<script src="~/Resources/Test.js"></script>
 
-	<script src="~/Css/jquery-3.2.1.min.js"></script>
-	<script src="~/Css/jquery-ui.min.js"></script>
-	<link href="~/Css/StyleSheet1.css" rel="stylesheet" />
-	<link href="~/Css/jquery-ui.min.css" rel="stylesheet" />
-	<script src="~/Css/jquery.flot.min.js"></script>
-	<script src="~/Css/jquery.flot.resize.min.js"></script>
-	<script src="~/Css/jquery.flot.dashes.js"></script>
-	<script src="~/Css/jquery.flot.navigate.js"></script>
-	<script src="~/Css/jquery.flot.tickrotor.js"></script>
-	<script>
-
-		var search_result;
-		var panel_close = function (sender) { sender.parentElement.remove(); };
-		var change_panel_mark = function (sender) {
-			$(sender.parentElement).find("[name='Deflection']")[0].max = sender.value;
-		};
-		var search = function () {
-			$("#errors").html('');
-			$("#result").html('');
-			func = get_function();
-			error = validation(func);
-			if (error != "") {
-				$("#errors").append("<span style='color:red'>" + error + "</span>")
-			}
-			else {
-				var data = "{'func':'" + func + "'}";
-				$.ajax({
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-					dataType: 'json',
-					data: data,
-					url: " ../Home/Filter",
-					success: function (data) { search_result = data;draw_plots(data) },
-					error: function (data) { debugger; }
-				});
-			}
-		}
-		var get_function = function () {
-			var s = "";
-			var divs = $("#editor div");
-			for (i = 0; i < divs.length; i++) {
-				if (divs[i].getAttribute("val") != "+") s += divs[i].getAttribute("val");
-				else {
-					comp = $(divs[i]).find("[name='Competences']")[0].value;
-					val = $(divs[i]).find("[name='Mark']")[0].value - $(divs[i]).find("[name='Deflection']")[0].value
-					s += "[" + comp + ">" + val + "]";
-				}
-			}
-			return s;
-		}
-		var validation = function (str) {
-			str = str.replace(/\[(.+?)\]/g, "+");
-			var error = "";
-			if (str.match(/\)\)|\|\||\&\&|\+\+|!!|\+!|\+\(|\&\||\&\)|\|\&|\|\)|!\&|!\||!\)|\(\&|\(\||\(\)|\)\+|\)\!|\)\(/g) != null) {
-				error += "Ошибка: проверьте правильность функции <br/>";
-			}
-			if (str.match(/^[\&\|\)]/g) != null) {
-				error += "Ошибка: блоки 'и','или',')' не могут стоять в начале функции<br/>";
-			}
-			if (str.match(/[\!\|\(\&]$/g) != null) {
-				error += "Ошибка: блоки 'не','и','или','(' не могут стоять в конце функции<br/>";
-			}
-			if ((str.match(/\(/g) != null && str.match(/\)/g) != null && str.match(/\(/g).length != str.match(/\)/g).length) ||
-				(str.match(/\(/g) != null && str.match(/\)/g) == null) ||
-				(str.match(/\(/g) == null && str.match(/\)/g) != null)) {
-				error += "Проверьте правильность расставления скобок <br/>";
-			}
-			return error;
-		}
-		var add_panel = function (val) {
-			if (val == undefined) val = "+";
-			else val = this.getAttribute("val");
-
-			var style = "panel ", content;
-			switch (val) {
-				case "+": {
-					style += "param"; content = $("#hiddenHtml").html();
-					break;
-				}
-				case "&": { style += "logic"; content = "и"; break; }
-				case "|": { style += "logic"; content = "или"; break; }
-				case "!": { style += "logic"; content = "не"; break; }
-				case "(": { style += "logic"; content = "("; break; }
-				case ")": { style += "logic"; content = ")"; break; }
-			}
-
-			$("#editor").append(
-				"<div class='" + style + "' val='" + val + "'>" + content + "<button onclick='panel_close(this)' /></div>");
-		}
-		var remove_panels = function () 
-		{
-			$("#editor").children().remove();
-			$("#result").children().remove();
-			$("#errors").children().remove();
-		};
-		var new_plot= function (val, norm_value, deflection_value, node_id)
-		{
-
-			var norm = []; var deflection = []; var marks = []; var student = [];
-			for (var i = 0; i < val.marks.length; i += 1) {
-				norm.push([i, norm_value]);
-				deflection.push([i, norm_value-deflection_value]);
-				marks.push([i, val.marks[i].Score]);
-				student[i] = [i, val.marks[i].Student]
-			}
-			var pl = $.plot("#" + node_id, [{
-				data: norm,
-				label: "Граница ",
-				color: "#888888",
-				lines: { show: true }
-			}, {
-				data: deflection,
-				label: "Отклонение",
-				dashes: { show: true },
-				//lines: { show: true},
-				color: "#C48D8D"
-			}, {
-				data: marks,
-				label: "Оценка",
-				color: "#000000",
-				points: { show: true }
-			}],
-		{
-
-			xaxis: {
-				ticks: student,
-				min: -1,
-				max:  val.marks.length,
-				rotateTicks: 135,
-				zoomRange: [-1, val.marks.length],
-				panRange: [-1, val.marks.length]
-			},
-			grid: {
-				hoverable: true
-			},
-			yaxis: {
-				ticks: 10,
-				min: 0,
-				max: 105,
-				zoomRange: [0, 105],
-				panRange: [0, 105]
-
-			},
-			zoom: {
-				interactive: true
-			},
-			pan: {
-				interactive: true
-			}
-		});
-			$("<div id='tooltip'></div>").css({
-				position: "absolute",
-				display: "none",
-				border: "1px solid #fdd",
-				padding: "2px",
-				"background-color": "#fee",
-				opacity: 0.80
-			}).appendTo("body");
-
-			$("#"+node_id).bind("plothover", function (event, pos, item) {
-
-				//var str = "(" + search_result[event.target.id.substr(4)].marks[pos.x].Student + ", " + pos.y.toFixed(2) + ")";
-				str = "";
-				$("#hoverdata").text(str);
-				if (item) {
-					var x = item.datapoint[0].toFixed(0),
-						y = item.datapoint[1].toFixed(0);
-
-					$("#tooltip").html(search_result[event.target.id.substr(4)].marks[x].Student + " - " + y)
-						.css({ top: item.pageY + 5, left: item.pageX + 5 })
-						.fadeIn(200);
-				} else {
-					$("#tooltip").hide();
-				}
-
-			});
-			return pl;
-		}
-		var draw_plots =  function(val)
-		{
-			$("#result").children().remove();
-			var panel_divs = $("div [id='editor'] [val='+']");
-			
-			for (i = 0; i < val.length; i++)
-			{
-				$("#result").append("<div id='plot" + i + "' class='demo-placeholder'></div>");
-				new_plot(val[i], $(panel_divs[i]).find("[name='Mark']")[0].value, $(panel_divs[i]).find("[name='Deflection']")[0].value, "plot" + i);
-			}
-		}
-
-		$(document).ready(
-	function () {
-		$("#editor").sortable({
-			distance: 10
-		});
-		$("#button_panel button").on("click", add_panel);
-		$("#search_button").on("click", search);
-		$("#del_button").on("click", remove_panels);
-
-		add_panel();
-	});
-
-	</script>
 </head>
 <body>
 	<div id="hiddenHtml" style="display:none;">
-		
-		<table>
-			<tr>
-				<td><p>Компетенция</p></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td colspan="2">@Html.DropDownList("Competences", ViewBag.Competences as SelectList)</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td><p>Значение</p> </td>
-				<td><p>Отклонение</p></td>
-			</tr>
-			<tr>
-				<td><input onchange="change_panel_mark(this);" name="Mark" type="number" min="0" max="100" step="1" value="0" />
-</td>
-				<td><input type="number" name="Deflection" min="0" max="100" step="1" value="0" /></td>
-			</tr>
-		</table>
-		
-		
-		
-		
-		
-	
-	</div>
-
-		<div class="main">
-			<div id="buttons">
-				<div id="button_panel" class="filter button_panel">
-					<button id="add_button" val="+"> ДОБАВИТЬ </button>
-					<button id="and_button" val="&"> И </button>
-					<button id="or_button" val="|"> ИЛИ </button>
-					<button id="not_button" val="!"> НЕ </button>
-					<button id="left_bracket" val="(">  (  </button>
-					<button id="right_bracket" val=")">  )  </button>
+		<div id="table">
+			<div class="caption">
+				Компетенция:
+			</div>
+			<div class="caption">
+				@Html.DropDownList("Competences", ViewBag.Competences as SelectList)
+			</div>
+			<div class="row">
+				<div class="cell">Значение:</div>
+				<div class="cell">Отклонение:</div>
+			</div>
+			<div class="row">
+				<div class="cell">
+					> <input onchange="change_panel_mark(this);" name="Mark" type="number" min="0" max="100" step="1" value="0" />
 				</div>
-				<div class="filter button_panel">
-					<button id="search_button"> Поиск </button>
-					<button id="del_button"> Очистить </button>
+				<div class="cell">
+					- <input type="number" name="Deflection" min="0" max="100" step="1" value="0" />
 				</div>
 			</div>
-			<div id="editor" class="filter"></div>
-			<div id="errors" class=""></div>
-			<div id="result" class="filter"></div>
-
-
-
 		</div>
+	</div>
+	<div id="waiter"></div>
+
+	<div class="main">
+		<div id="buttons">
+			<div id="button_panel" class="filter button_panel">
+				<a id="add_button" val="+"> ДОБАВИТЬ </a>
+				<a id="and_button" val="&"> И </a>
+				<a id="or_button" val="|"> ИЛИ </a>
+				<a id="not_button" val="!"> НЕ </a>
+				<a id="left_bracket" val="(">  (  </a>
+				<a id="right_bracket" val=")">  )  </a>
+			</div>
+			<div class="filter button_panel">
+				<a id="search_button"> ПОИСК </a>
+				<a id="del_button" class="del"></a>
+			</div>
+		</div>
+		<div id="editor" class="filter"></div>
+		<div id="errors" class=""></div>
+		<div id="result" class="filter"></div>
+	</div>
 </body>
 </html>

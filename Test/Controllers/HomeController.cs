@@ -47,7 +47,7 @@ namespace Test.Controllers
 
 			var func_result = RPN.Calculate(set, replace_index(func)).ToList();
 			search_result[] results = new search_result[mat.Count];
-
+			if (func_result.Count == 0) return null;
 			//var result = db.Mark.Where(u => func_result.Contains(u.StudentId) && comps.Contains(u.Competence.Type)).Select(c=>new { Competence=c.Competence.Type,Student=c.Student.FIO,Score=c.Score});
 			for (int i=0; i < comps.Count; i++)
 			{

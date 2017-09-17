@@ -172,16 +172,19 @@
     <Content Include="bin\System.Web.Webpages.xml" />
     <Content Include="bin\Test.dll" />
     <Content Include="bin\Test.pdb" />
-    <Content Include="Css\Close.png" />
-    <Content Include="Css\jquery-3.2.1.min.js" />
-    <Content Include="Css\jquery-ui.min.css" />
-    <Content Include="Css\jquery-ui.min.js" />
-    <Content Include="Css\jquery.flot.dashes.js" />
-    <Content Include="Css\jquery.flot.min.js" />
-    <Content Include="Css\jquery.flot.navigate.js" />
-    <Content Include="Css\jquery.flot.resize.min.js" />
-    <Content Include="Css\StyleSheet1.css" />
+    <Content Include="Resources\Close.png" />
+    <Content Include="Resources\jquery-3.2.1.min.js" />
+    <Content Include="Resources\jquery-ui.min.css" />
+    <Content Include="Resources\jquery-ui.min.js" />
+    <Content Include="Resources\jquery.flot.dashes.js" />
+    <Content Include="Resources\jquery.flot.min.js" />
+    <Content Include="Resources\jquery.flot.navigate.js" />
+    <Content Include="Resources\jquery.flot.resize.min.js" />
+    <Content Include="Resources\test.css" />
     <Content Include="Global.asax" />
+    <Content Include="Resources\Test.js" />
+    <Content Include="Resources\trash.png" />
+    <Content Include="Resources\waiter.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -210,8 +213,8 @@
     <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
     <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <Content Include="bin\Test.dll.config" />
-    <Content Include="Css\open_sans.eot" />
-    <Content Include="Css\open_sans.ttf" />
+    <Content Include="Resources\open_sans.eot" />
+    <Content Include="Resources\open_sans.ttf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
