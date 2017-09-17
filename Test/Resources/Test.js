@@ -21,7 +21,7 @@ var search = function () {
 			contentType: "application/json; charset=utf-8",
 			dataType: 'json',
 			data: data,
-			url: " ../Home/Filter",
+			url: "http://" + window.location.host + "/" + window.location.pathname.split("/")[1]+"/Home/Filter",
 			success: function (data) { search_result = data; draw_plots(data); waiter.stop(); },
 			error: function (data) { $("#errors").append("<span style=''>По данным параметрам поиск не дал результата</span>"); waiter.stop(); }
 		});
