@@ -109,7 +109,14 @@ h2 {
 #result > div {
 	margin: 20px;
 }
+#list ol {
+  list-style-position: inside;
+  -moz-column-count: 3; /* Firefox */
+  -webkit-column-count: 3; /* Safari and Chrome */
+  column-count: 3;
+  list-style-type:disc;
 
+}
 #buttons {
 	display: flex;
 	justify-content: space-between;
@@ -206,3 +213,4 @@ h2 {
 	background-size: 50px;
 	background-position: center;
 }
+

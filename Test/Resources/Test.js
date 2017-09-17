@@ -7,6 +7,7 @@ var change_panel_mark = function (sender) {
 var search = function () {
 	$("#errors").html('');
 	$("#result").html('');
+	$("#list").html('');
 	waiter.start();
 	func = get_function();
 	error = validation(func);
@@ -22,10 +23,27 @@ var search = function () {
 			dataType: 'json',
 			data: data,
 			url: "http://" + window.location.host + "/" + window.location.pathname.split("/")[1]+"/Home/Filter",
-			success: function (data) { search_result = data; draw_plots(data); waiter.stop(); },
+			success: function (data)
+			{
+				search_result = data;
+				student_list(data);
+				draw_plots(data);
+				waiter.stop();
+			},
 			error: function (data) { $("#errors").append("<span style=''>По данным параметрам поиск не дал результата</span>"); waiter.stop(); }
 		});
 	}
+}
+var student_list = function (data)
+{
+	function fill_list(element, index, array) {
+		str += '<li>' + element.Student + '</li>';
+	}
+	var str='<ol>';
+	data[0].marks.forEach(fill_list);
+	str += '</ol>'
+	$("#list").append(str);
+
 }
 var get_function = function () {
 	var s = "";
