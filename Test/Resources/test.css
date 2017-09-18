@@ -8,12 +8,14 @@ html {
 	height: 100%;
 }
 
-body, p {
-	font-family: 'Open Sans', sans-serif;
-	display: unset;
-	height: 100%;
-	background: linear-gradient(to bottom, #aca4b5 10%, #ffffff 20%);
+body {background: linear-gradient(to bottom, #aca4b5 10%, #ffffff 20%);
 	background-repeat: no-repeat;
+	/*height: 100%;*/
+	font-family: 'Open Sans', sans-serif;
+}
+p {	
+	text-indent:1.5em;
+	text-align:justify;
 }
 
 h2 {
@@ -30,6 +32,7 @@ h2 {
 .main > div {
 	margin-bottom: 10px;
 	align-self: center;
+	
 }
 
 .filter {
@@ -172,7 +175,36 @@ h2 {
 	background-position: center;
 }
 
+.help {
+	background-image: url('question.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
 
+.help_div {
+	display:none;
+	background-color: #dddddd;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	width:50%;
+	position:fixed;
+	margin:0 auto;
+	top:140px;
+	left: 50%;
+	margin-left: -25%;
+	padding:10px;
+	border-radius: 5px;
+}
+	.help_div button {
+		display: initial;
+		background-image: url('close.png');
+		background-repeat: no-repeat;
+		border: none;
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		width: 16px;
+		height: 16px;
+	}
 .table {
 	display: table;
 	padding-top: 5px;

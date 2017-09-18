@@ -34,6 +34,7 @@ var search = function () {
 		});
 	}
 }
+var help_hide = function (sender) { $(sender.parentElement).hide(); }
 var student_list = function (data)
 {
 	function fill_list(element, index, array) {
@@ -97,10 +98,11 @@ var add_panel = function (val) {
 	$("#editor").append(
 		"<div class='" + style + "' val='" + val + "'>" + content + "<a onclick='panel_close(this)' /></div>");
 }
-var remove_panels = function () {
+var remove = function () {
 	$("#editor").children().remove();
 	$("#result").children().remove();
 	$("#errors").children().remove();
+	$("#list").children().remove();
 };
 var new_plot = function (val, norm_value, deflection_value, node_id) {
 
@@ -116,17 +118,17 @@ var new_plot = function (val, norm_value, deflection_value, node_id) {
 	var pl = $.plot("#" + node_id, [{
 		data: norm,
 		label: "Граница ",
-		color: "#888888",
+		color: "#53d6b7",
 		dashes: { show: true },
 	}, {
 		data: deflection,
 		label: "Отклонение",
 		dashes: { show: true },
-		color: "#6e528d"
+		color: "#ed6f61"
 	}, {
 		data: marks,
 		label: "Оценка",
-		color: "#000000",
+		color: "#555555",
 		points: { show: true }
 	}],
 {
@@ -191,7 +193,8 @@ function () {
 	});
 	$("#button_panel a").on("click", add_panel);
 	$("#search_button").on("click", search);
-	$("#del_button").on("click", remove_panels);
+	$("#help_button").on("click", function () { $("#help").show() });
+	$("#del_button").on("click", remove);
 	$("<div id='tooltip'></div>").css({
 		position: "absolute",
 		display: "none",

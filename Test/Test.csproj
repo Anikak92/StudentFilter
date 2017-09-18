@@ -180,6 +180,8 @@
     <Content Include="Resources\jquery.flot.min.js" />
     <Content Include="Resources\jquery.flot.navigate.js" />
     <Content Include="Resources\jquery.flot.resize.min.js" />
+    <Content Include="Resources\jquery.flot.tickrotor.js" />
+    <Content Include="Resources\loading.gif" />
     <Content Include="Resources\test.css" />
     <Content Include="Global.asax" />
     <Content Include="Resources\Test.js" />
